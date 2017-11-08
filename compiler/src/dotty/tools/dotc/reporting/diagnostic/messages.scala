@@ -1888,4 +1888,10 @@ object messages {
     }
     val explanation = "A statement is either an import, a definition or an expression."
   }
+
+  case class CouldNotEmitSwitchForAnnotatedMatch()(implicit ctx: Context) extends Message(CouldNotEmitSwitchForAnnotatedMatchID) {
+    val kind = "Syntax"
+    val msg = "x4 could not emit switch for @switch annotated match"
+    val explanation = hl"abc"
+  }
 }

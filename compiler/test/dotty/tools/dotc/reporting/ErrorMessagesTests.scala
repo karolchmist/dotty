@@ -1151,4 +1151,28 @@ class ErrorMessagesTests extends ErrorMessagesTest {
         assertEquals(IllegalStartOfStatement(isModifier = false), err)
         assertEquals(IllegalStartOfStatement(isModifier = true), errWithModifier)
       }
+
+  @Test def foo =
+    checkMessagesAfter("patternMatcher") {
+      """
+        |import scala.annotation.switch
+        |class SwitchDemo {
+        |  val i = 1
+        |  val Two = 2
+        |  val x = (i: @switch) match {
+        |    case 1  => "One"
+        |    case Two => "Two"
+        |    case _  => "Other"
+        |  }
+        |
+        |}
+        """.stripMargin
+    }
+      .expect { (ictx, messages) =>
+        implicit val ctx: Context = ictx
+
+        assertMessageCount(1, messages)
+      }
+
+
 }

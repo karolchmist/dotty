@@ -3,17 +3,26 @@ package transform
 
 import core._
 import MegaPhase._
+
 import collection.mutable
-import SymDenotations._, Symbols._, Contexts._, Types._, Names._, StdNames._, NameOps._
+import SymDenotations._
+import Symbols._
+import Contexts._
+import Types._
+import Names._
+import StdNames._
+import NameOps._
 import ast.Trees._
 import util.Positions._
-import typer.Applications.{isProductMatch, isGetMatch, productSelectors}
+import typer.Applications.{isGetMatch, isProductMatch, productSelectors}
 import SymUtils._
-import Flags._, Constants._
+import Flags._
+import Constants._
 import Decorators._
 import patmat.Space
-import NameKinds.{UniqueNameKind, PatMatStdBinderName, PatMatCaseName}
+import NameKinds.{PatMatCaseName, PatMatStdBinderName, UniqueNameKind}
 import config.Printers.patmatch
+import dotty.tools.dotc.reporting.diagnostic.messages.CouldNotEmitSwitchForAnnotatedMatch
 
 /** The pattern matching transform.
  *  After this phase, the only Match nodes remaining in the code are simple switches
@@ -908,7 +917,8 @@ object PatternMatcher {
           tpes.toSet.size: Int // without the type ascription, testPickling fails because of #2840.
         }
         if (numConsts(resultCases) < numConsts(original.cases))
-          ctx.warning(i"could not emit switch for @switch annotated match", original.pos)
+          ctx.warning(CouldNotEmitSwitchForAnnotatedMatch(), original.pos)
+//          ctx.error(CouldNotEmitSwitchForAnnotatedMatch(), original.pos)
       case _ =>
     }
 
