@@ -971,7 +971,7 @@ class PatternMatcherOld extends MiniPhase with DenotTransformer {
           }*/
 
         emitSwitch(scrut, scrutSym, casesRebindingPropagated, pt, matchFailGenOverride, suppression.exhaustive).getOrElse{
-          if (requireSwitch) ctx.warning("could not emit switch for @switch annotated match", scrut.pos)
+          if (requireSwitch) ctx.warning("x3 could not emit switch for @switch annotated match", scrut.pos)
 
           if (casesRebindingPropagated nonEmpty) {
             // before optimizing, check casesNoSubstOnly for presence of a default case,
